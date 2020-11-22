@@ -128,6 +128,12 @@ class Blade implements FactoryContract
             ];
         }, true);
         
+        $this->container->singletonIf(FactoryContract::class, function () {
+            return $this;
+        });
+
+        Container::setInstance($this->container);
+        
         Facade::setFacadeApplication($this->container);
     }
 }
