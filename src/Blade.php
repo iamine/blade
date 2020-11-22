@@ -120,6 +120,10 @@ class Blade implements FactoryContract
         $this->container->bindIf('events', function () {
             return new Dispatcher;
         }, true);
+        
+        $this->container->singletonIf(FactoryContract::class, function () {
+            return $this;
+        });
 
         $this->container->bindIf('config', function () use ($viewPaths, $cachePath) {
             return [
@@ -127,10 +131,6 @@ class Blade implements FactoryContract
                 'view.compiled' => $cachePath,
             ];
         }, true);
-        
-        $this->container->singletonIf(FactoryContract::class, function () {
-            return $this;
-        });
 
         Container::setInstance($this->container);
         
