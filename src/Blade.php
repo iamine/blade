@@ -131,6 +131,15 @@ class Blade implements FactoryContract
         $this->container->singletonIf(FactoryContract::class, function () {
             return $this;
         });
+        
+        $this->container->singleton(Application::class, function () {
+            return new class {
+                public function getNamespace() {
+                    $composer = json_decode(file_get_contents('composer.json'), true);
+                    return count($composer['autoload']['psr-4'] ?? []) ? array_keys($composer['autoload']['psr-4'])[0] : null;
+                }
+            };
+        });
 
         Container::setInstance($this->container);
         
